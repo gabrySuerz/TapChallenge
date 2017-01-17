@@ -11,7 +11,9 @@
 #define GameTimer 1
 #define GameTime 5
 #define FirstTime @"FirstTime"
-#define OldTap @"TapsCount"
+
+#define Defaults [NSUserDefaults standardUserDefaults]
+#define Results @"User Score"
 
 @interface ViewController (){
     int _tapsCount;
@@ -41,14 +43,15 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    if([self firstTime]){
-        if([self risultato] > 0){
-            [self mostraUltimoRisultato:[self risultato]];
-        }
+    if([self firstTime] == false){
+        [Defaults setBool:true forKey:FirstTime];
+        [Defaults synchronize];
     }
     else{
-        [[NSUserDefaults standardUserDefaults] setBool:true forKey:FirstTime];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        if([self risultati].count > 0){
+            NSNumber *value = [self risultati].firstObject;
+            [self mostraUltimoRisultato:value.intValue];
+        }
     }
 }
 
@@ -87,13 +90,13 @@
             message=[NSString stringWithFormat:@"Winner with: %i taps!",_tapsCount];
             title=@"You Win";
         }
-            
+        
         UIAlertController *alertViewController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             NSLog(@"OK Action premuta");
         }];
-
+        
         [alertViewController addAction:okAction];
         [self presentViewController:alertViewController animated:true completion:nil];
         
@@ -115,17 +118,46 @@
 
 #pragma mark - persistence
 
--(int)risultato{
-    return [[NSUserDefaults standardUserDefaults] integerForKey:OldTap];
+-(NSArray *)risultati{
+    NSArray *array = [Defaults objectForKey:Results];
+    
+    if(array == nil){
+        array = @[];
+    }
+    
+    return array;
 }
 
 -(bool)firstTime{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:FirstTime];
+    return [Defaults boolForKey:FirstTime];
 }
 
 -(void)saveGame{
-    [[NSUserDefaults standardUserDefaults] setInteger:_tapsCount forKey:OldTap];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSMutableArray *array = [[Defaults objectForKey:Results] mutableCopy];
+    if(array == nil){
+        //OLD
+        //array = [[NSMutableArray alloc] init].mutableCopy;
+        array = @[].mutableCopy;
+    }
+    
+    //OLD //NSNumber *number = [NSNumber numberWithInt:_tapsCount
+    [array addObject:@(_tapsCount)];
+    
+    NSArray *arrayToBeSaved = [array sortedArrayUsingComparator:^NSComparisonResult(NSNumber *obj1, NSNumber *obj2) {
+        int value1 = obj1.integerValue, value2=obj2.integerValue;
+        if (value1 == value2){
+            return NSOrderedSame;
+        }
+        
+        if (value1 < value2){
+            return NSOrderedAscending;
+        }
+        
+        return NSOrderedDescending;
+    }];
+    
+    [Defaults setObject:arrayToBeSaved forKey:Results];
+    [Defaults synchronize];
 }
 
 @end
