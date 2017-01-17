@@ -156,6 +156,8 @@
         return NSOrderedDescending;
     }];
     
+    NSLog(@"%@",arrayToBeSaved);
+    
     [Defaults setObject:arrayToBeSaved forKey:Results];
     [Defaults synchronize];
 }
