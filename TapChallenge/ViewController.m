@@ -10,6 +10,8 @@
 
 #define GameTimer 1
 #define GameTime 5
+#define FirstTime @"FirstTime"
+#define OldTap @"TapsCount"
 
 @interface ViewController (){
     int _tapsCount;
@@ -39,7 +41,15 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [self mostraUltimoRisultato:[[NSUserDefaults standardUserDefaults] integerForKey:@"TapsCount"]];
+    if([self firstTime]){
+        if([self risultato] > 0){
+            [self mostraUltimoRisultato:[self risultato]];
+        }
+    }
+    else{
+        [[NSUserDefaults standardUserDefaults] setBool:true forKey:FirstTime];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 #pragma mark - actions
@@ -106,12 +116,15 @@
 #pragma mark - persistence
 
 -(int)risultato{
-    NSInteger value = [[NSUserDefaults standardUserDefaults] integerForKey:@"TapsCount"];
-    return value;
+    return [[NSUserDefaults standardUserDefaults] integerForKey:OldTap];
+}
+
+-(bool)firstTime{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:FirstTime];
 }
 
 -(void)saveGame{
-    [[NSUserDefaults standardUserDefaults] setInteger:_tapsCount forKey:@"TapsCount"];
+    [[NSUserDefaults standardUserDefaults] setInteger:_tapsCount forKey:OldTap];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
