@@ -20,7 +20,7 @@
     int _tapsCount;
     int _timeCount;
     int _tapsHistory;
-    UILabel _nuovaLabel;
+    UILabel *_nuovaLabel;
     
     NSTimer *_gameTimer;
 }
