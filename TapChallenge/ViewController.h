@@ -14,6 +14,7 @@
 @property (nonatomic, weak) IBOutlet UILabel *timeLabel;
 
 -(IBAction)buttonPressed:(id)sender;
+-(IBAction)tapGestureRacognizerDidRecognize:(id)sender;
 
 @end
 

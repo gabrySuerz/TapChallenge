@@ -46,6 +46,10 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Y6w-jN-HlP" appends="YES" id="s1h-Zz-bd8"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="tapsCountLabel" destination="kLR-a8-kH6" id="DeB-BK-2iA"/>
@@ -53,6 +57,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Y6w-jN-HlP">
+                    <connections>
+                        <action selector="tapGestureRacognizerDidRecognize:" destination="BYZ-38-t0r" id="lG1-gX-tY2"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="32.799999999999997" y="38.23088455772114"/>
         </scene>

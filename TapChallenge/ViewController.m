@@ -57,7 +57,7 @@
 
 #pragma mark - actions
 
--(IBAction)buttonPressed:(id)sender{
+-(IBAction)tapGestureRacognizerDidRecognize:(id)sender{
     
     //il timer viene creato solo non esiste
     if(_gameTimer == nil){
@@ -68,6 +68,9 @@
     _tapsCount++;
     
     [self.tapsCountLabel setText:[NSString stringWithFormat:@"%i", _tapsCount]];
+}
+
+-(IBAction)buttonPressed:(id)sender{
     
 }
 
