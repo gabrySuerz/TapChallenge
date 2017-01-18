@@ -20,6 +20,7 @@
     int _tapsCount;
     int _timeCount;
     int _tapsHistory;
+    UILabel _nuovaLabel;
     
     NSTimer *_gameTimer;
 }
@@ -34,12 +35,22 @@
     
     [self initializeGame];
     
+    //titolo navigation bar
     self.title = @"Tap Challenge";
     
-    //pulsante per la tableview
+    //creo il pulsante per la tableview
     UIBarButtonItem *scoreButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(scoreButtonPressed)];
     
+    //imposto il pulsante a destra
     self.navigationItem.rightBarButtonItem = scoreButtonItem;
+    
+    //nuova label con inserimento da codice
+    _nuovaLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 100, 100, 40)];
+    [_nuovaLabel setText:@"CodeLabel"];
+    [_nuovaLabel setBackgroundColor:[UIColor redColor]];
+    [_nuovaLabel setTextColor:[UIColor whiteColor]];
+    [_nuovaLabel setFont:[UIFont systemFontOfSize:20]];
+    [self.view addSubview:_nuovaLabel];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -55,6 +66,11 @@
     }*/
     
     [self resumeGame];
+    
+    [UIView animateWithDuration:5 animations:^{
+        [_nuovaLabel setCenter:CGPointMake(300, 300)];
+        [_nuovaLabel setAlpha:0];
+    }];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -88,6 +104,7 @@
     //UIViewController *viewController = [[UIViewController alloc] init];
     //viewController.title = @"Nuova view";
     
+    //
     ScoreTableViewController *tableViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"ScoreTableViewController"];
     
     NSArray *resultArray = [self risultati];
@@ -194,10 +211,10 @@
         }
         
         if (value1 < value2){
-            return NSOrderedAscending;
+            return NSOrderedDescending;
         }
         
-        return NSOrderedDescending;
+        return NSOrderedAscending;
     }];
     
     NSLog(@"%@",arrayToBeSaved);
